@@ -2,7 +2,9 @@
  * Created by ZZ on 2017/4/10.
  */
 var fs = require("fs");
-var data = fs.readFileSync('resources\\input.txt');
+var express = require("express");
+
+var data = fs.readFileSync('..\\resources\\input.txt');
 console.log(data.toString());
 console.log("End!");
 //非阻塞式
@@ -30,3 +32,7 @@ eventEmitter.on('data_recv',function(){
 
 eventEmitter.emit('connect');
 console.log("程序执行完毕！");
+
+var path ="index.html";
+console.log(path.substr(1));
+
