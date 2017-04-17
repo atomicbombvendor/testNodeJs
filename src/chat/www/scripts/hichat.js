@@ -46,6 +46,16 @@ HiChat.prototype = {
                 document.getElementById('loginWrapper').style.display = 'none';//隐藏遮罩层显聊天界面
                 document.getElementById('messageInput').focus();//让消息输入框获得焦点
             });
+
+            this.socket.on('system', function(nickName, userCount, type) {
+                //判断用户是连接还是离开以显示不同的信息
+                var msg = nickName + (type == 'login' ? ' joined' : ' left');
+                var p = document.createElement('p');
+                p.textContent = msg;
+                document.getElementById('historyMsg').appendChild(p);
+                //将在线人数显示到页面顶部
+                document.getElementById('status').textContent = userCount + (userCount > 1 ? ' users' : ' user') + ' online';
+            });
         }
     }
 }

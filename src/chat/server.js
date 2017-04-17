@@ -9,7 +9,7 @@ app.use('/', express.static(__dirname+'/www'));
 server.listen(90);
 var io = socket.listen(server);
 
-var users = new Array(100);
+var users = new Array();
 users[0]="liyan";
 users[1]="system";
 users[2]="admin";
@@ -30,9 +30,17 @@ io.on('connection',function(socket){
             socket.nickname = nickname;
             users.push(nickname);
             socket.emit('loginSuccess');
-            io.sockets.emit('system', nickname);//向所有连接到服务器的客户端发送当前登陆用户的昵称
+            io.sockets.emit('system', nickname, users.length, 'login');//向所有连接到服务器的客户端发送当前登陆用户的昵称
         }
     })
+
+    //断开连接的事件
+    socket.on('disconnect', function() {
+        //将断开连接的用户从users中删除
+        users.splice(socket.userIndex, 1);
+        //通知除自己以外的所有人
+        socket.broadcast.emit('system', socket.nickname, users.length, 'logout');
+    });
 });
 
 console.log("End~");
