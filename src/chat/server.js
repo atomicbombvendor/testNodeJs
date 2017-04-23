@@ -6,14 +6,14 @@ var socket = require('socket.io');//import socket.io
 var app = express();
 var server = require('http').createServer(app);
 app.use('/', express.static(__dirname+'/www'));
-server.listen(90);
+server.listen(91);
 var io = socket.listen(server);
 
 var users = new Array();
-users[0]="liyan";
-users[1]="system";
-users[2]="admin";
-users[3]="user";
+// users[0]="liyan";
+// users[1]="system";
+// users[2]="admin";
+// users[3]="user";
 
 //socket part
 io.on('connection',function(socket){
@@ -41,6 +41,18 @@ io.on('connection',function(socket){
         //通知除自己以外的所有人
         socket.broadcast.emit('system', socket.nickname, users.length, 'logout');
     });
+
+    socket.on('postMsg', function (msg, color) {
+        //将消息发送到出自己以外的所有用户
+        socket.broadcast.emit('newMsg',socket.nickname, msg, color);
+    });
+
+    socket.on('img', function (imgData) {
+        socket.broadcast.emit('newImg',socket.nickname, imgData);
+    });
+
 });
 
+//on 接受事件 emit发送事件
+console.log("localhost:90")
 console.log("End~");

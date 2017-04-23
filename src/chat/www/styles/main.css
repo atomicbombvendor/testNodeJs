@@ -45,7 +45,7 @@ html, body {
     padding: 2px;
 }
 #historyMsg img {
-    max-width: 99%;
+    max-height: 40%;
 }
 .timespan {
     color: #ddd;
